@@ -3,11 +3,11 @@
 ## Source codes
 - `gdn` = Guardian
 - `rtr` = Reuters
-- `gdelt` = GDELT
 
 ## Method codes
 - `api` = API
-- `scrp` = scraped
+- `web` = web scraped
+- `gdelt` = GDELT
 
 ## Date format
 - Single year: `YYYY` (e.g., 2024)
