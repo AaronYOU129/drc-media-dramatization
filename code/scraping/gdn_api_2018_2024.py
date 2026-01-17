@@ -161,7 +161,7 @@ df = pd.DataFrame(all_articles)
 # generate file path relative to script location
 script_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(script_dir))
-output_dir = os.path.join(project_root, 'data', 'processed')
+output_dir = os.path.join(project_root, 'data', 'raw')
 os.makedirs(output_dir, exist_ok=True)
 
 csv_filename = os.path.join(output_dir, 'gdn_api_2018_2024.csv')
