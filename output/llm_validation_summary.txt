@@ -1,0 +1,16 @@
+============================================================
+LLM VALIDATION SUMMARY
+============================================================
+
+Overall correlations:
+  LLM vs PCA:    r = 0.652
+  LLM vs Binary: r = 0.362
+
+Per-dimension correlations:
+  emotional: r = 0.279
+  personal: r = 0.240
+  narrative: r = 0.192
+  firstperson: r = 0.316
+
+Binary agreement rate: 42.6%
+Total articles: 394
