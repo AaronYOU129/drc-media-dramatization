@@ -14,6 +14,8 @@ salience_news/
 │   ├── raw/               # Unprocessed scraped data
 │   ├── processed/         # Cleaned data
 │   └── final/             # Final datasets
+├── output/
+│   └── figures/           # Generated figures (PDFs)
 └── README.md
 ```
 
@@ -40,11 +42,23 @@ salience_news/
 - Calculate word counts per 1,000 words
 - Compute z-scores for each dimension
 - Run PCA to extract dramatization index (PC1)
+- LLM validation using DeepSeek (r = 0.652 with PCA index)
+
+| Script | Description | Output |
+|--------|-------------|--------|
+| `dramatization index.py` | Dictionary-based scoring + PCA | `data/processed/*_conflict_analyzed.csv` |
+| `llm_validation.py` | DeepSeek LLM validation | `output/llm_validation_results.csv` |
+| `llm_validation_analysis.py` | Correlation analysis | `output/llm_validation_summary.txt` |
 
 ### Pipeline 4: Comparative Analysis
 - Guardian vs. Reuters comparison (Table 5)
 - Pre/post M23 analysis (Tables 6-7)
-- Generate Figures 2-4
+- Generate Figures 1-4
+
+| Script | Description | Output |
+|--------|-------------|--------|
+| `comparison.py` | Guardian vs Reuters, pre/post M23 | `output/summary_statistics.csv` |
+| `figures.py` | Generate analysis figures | `output/figures/*.pdf` |
 
 ### Pipeline 5: Experimental Materials
 - Select high-dramatization articles as templates for "Dramatized" condition
@@ -62,7 +76,7 @@ salience_news/
 
 1. Install dependencies:
    ```bash
-   pip install requests pandas selenium webdriver-manager python-dotenv
+   pip install requests pandas selenium webdriver-manager python-dotenv openai
    ```
 
 2. Create `.env` file from template:
@@ -80,6 +94,9 @@ salience_news/
 
 ## To Do
 
-- [ ] Finalize dramatization measures
-- [ ] Complete text analysis pipeline
+- [x] Finalize dramatization measures
+- [x] Complete text analysis pipeline
+- [x] LLM validation of dramatization index
 - [ ] Develop experimental design
+- [ ] Experiment data collection (Prolific)
+- [ ] Experiment analysis (R1-R4 regressions)
