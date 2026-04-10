@@ -1,19 +1,13 @@
 """
-Pipeline step 1: Reuters DRC news ingestion
-
-Purpose:
-- Collect all Reuters articles mentioning the Democratic Republic of Congo (DRC)
-- Extract title, publication date, and URL for downstream text analysis
-
-Design choices:
-- Use Selenium instead of requests due to Reuters' anti-bot measures
-- Manual CAPTCHA handling to ensure data completeness
-- No date filtering at this stage to preserve raw coverage
-
-Output:
-- CSV file with columns: title, date, url
-— but this python script only scrapes the first 75 pages of the search results (75*20 = 1500 articles), and I used the 
-  reuters_DRC_2022_24_v2.py script to scrape the remaining articles.
+Purpose:    Scrape Reuters search results for DRC articles (pages 1-75, ~1500 articles).
+            Uses Selenium because Reuters blocks programmatic requests. Requires manual
+            CAPTCHA completion before automated scraping begins. Part 2 script continues
+            from page 76 onward.
+Inputs:     None (scrapes live Reuters search results).
+Outputs:    data/raw/rtr_web_2021_2025.csv — columns: title, date, url.
+Key Steps:  Launch headless Chrome -> wait for manual CAPTCHA -> paginate through
+            search results -> extract article metadata -> deduplicate by URL -> save.
+How to Run: python code/scraping/rtr_web_2021_2025_part1.py
 """
 # load libraries
 from selenium import webdriver
@@ -86,7 +80,7 @@ def scrape_reuters_drc():
                         'date': date_el.get_attribute('datetime'),
                         'url': link_el.get_attribute('href')
                     })
-                except:
+                except Exception:
                     continue
             
             print(f"  Found {len(articles)} articles, total: {len(all_articles)}")

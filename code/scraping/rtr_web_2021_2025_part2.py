@@ -1,18 +1,13 @@
 """
-Pipeline step 2: Reuters DRC news ingestion (continued)
-
-Purpose:
-- Continue scraping from the 76th page of the search results
-- Extract title, publication date, and URL for downstream text analysis
-
-Design choices:
-- Use Selenium instead of requests due to Reuters' anti-bot measures
-- Manual CAPTCHA handling to ensure data completeness
-- No date filtering at this stage to preserve raw coverage
-
-Output:
-- CSV file with columns: title, date, url
-- Merged with previous scrapes to ensure no duplicates
+Purpose:    Continue Reuters DRC scraping from page 76 onward (offset=1500), picking
+            up where part1 left off. Same Selenium approach with manual CAPTCHA. After
+            scraping, merges with part1 output and deduplicates by URL.
+Inputs:     data/raw/rtr_web_2021_2025.csv (part1 output, for merging).
+Outputs:    data/raw/rtr_web_2021_2025_part2.csv — new articles only.
+            data/raw/rtr_web_2021_2025_merged.csv — combined and deduplicated.
+Key Steps:  Launch Chrome at page 76 offset -> wait for CAPTCHA -> paginate ->
+            extract metadata -> save part2 -> merge with part1 -> deduplicate -> save.
+How to Run: python code/scraping/rtr_web_2021_2025_part2.py
 """
 # load libraries
 
@@ -90,7 +85,7 @@ def scrape_reuters_continue():
                         'date': date_el.get_attribute('datetime'),
                         'url': link_el.get_attribute('href')
                     })
-                except:
+                except Exception:
                     continue
             
             print(f"  Found {len(articles)}, total new: {len(all_articles)}")
@@ -153,8 +148,8 @@ def scrape_reuters_continue():
         merged_path = os.path.join(output_dir, 'rtr_web_2021_2025_merged.csv')
         df_all.to_csv(merged_path, index=False)
         print(f"Merged total: {len(df_all)} articles in {merged_path}")
-    except:
-        pass
+    except Exception:
+        print("Could not merge with part1 file — saving part2 only.")
 
     return df_new
 
